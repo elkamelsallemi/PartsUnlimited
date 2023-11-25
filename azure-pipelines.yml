@@ -23,6 +23,13 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+# Add the task to use the specific .NET SDK version
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '7.0.400'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -34,3 +41,5 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+
