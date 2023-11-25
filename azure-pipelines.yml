@@ -5,51 +5,35 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- master
+  - master
 
-pool:
-  name: Default
+stages:
+ - stage: 'Build'
+   variables:
+      buildConfiguration: 'Release'
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+   jobs:
+   - job:
+     pool:
+      name: Default
+      workspace:
+      clean: all
 
-steps:
-- task: NuGetToolInstaller@1
-
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '2.2.102'
-    installationPath: $(Agent.ToolsDirectory)/dotnet
-    
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
-  inputs:
-    SearchPattern: '**\bin\**\*.pdb'
-    PublishSymbols: false
-  continueOnError: true
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-    ArtifactName: '$(Parameters.ArtifactName)'
-  condition: succeededOrFailed()
-
-
+     steps:
+     - task: UseDotNet@2
+       displayName: 'Use .NET Core SDK'
+       inputs:
+        packageType: sdk
+        version: 2.2.x
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+     - task: DotNetCoreCLI@2
+       displayName: "NuGet Restore"
+       inputs:
+        command: restore
+        projects: '**/*.csproj' 
+     - task: DotNetCoreCLI@2
+       displayName: "Build Solution"
+       inputs:
+        command: build
+        projects: '**/*.csproj'
+        arguments: '--configuration (buildConfiguration)'
