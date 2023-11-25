@@ -30,6 +30,15 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+# New steps for Node.js and npm
+- task: UseNode@1
+  inputs:
+    versionSpec: '14.x'
+    addToPath: true
+
+- script: npm install
+  workingDirectory: $(Build.SourcesDirectory)/src/PartsUnlimitedWebsite
+  
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
