@@ -33,7 +33,7 @@ steps:
 # New steps for Node.js and npm
 - task: UseNode@1
   inputs:
-    versionSpec: '14.x'
+    versionSpec: '7.x'
     addToPath: true
 
 - script: npm install
