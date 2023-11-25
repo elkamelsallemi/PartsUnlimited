@@ -23,7 +23,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '7.0.400'
+    version: '2.2.102'
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: NuGetCommand@2
