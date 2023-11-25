@@ -20,7 +20,7 @@ steps:
 - checkout: self
 - task: NuGetToolInstaller@1
 
-# Add the task to use the specific .NET SDK version
+# Add the task to use the specific .NET SDK versi
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
