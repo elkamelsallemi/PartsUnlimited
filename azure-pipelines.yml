@@ -39,7 +39,7 @@ steps:
 - task: Npm@1
   inputs:
     command: 'install'
-    workingDir: '$(Build.SourcesDirectory)/src/PartsUnlimitedWebsite'
+    workingDir: $(Build.SourcesDirectory)/src/PartsUnlimitedWebsite
   
 - task: VSBuild@1
   inputs:
