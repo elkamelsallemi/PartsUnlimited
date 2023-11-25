@@ -19,16 +19,16 @@ steps:
 - checkout: self
 - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
 # Add the task to use the specific .NET SDK version
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     version: '7.0.400'
     installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
 
 - task: VSBuild@1
   inputs:
